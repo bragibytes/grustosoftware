@@ -1,0 +1,38 @@
+{{define "index"}}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Go Software Solutions</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" href="/a/css/foundation.css">
+    </head>
+    <body>
+        {{template "navComponent" .}}
+
+        {{if .Errors}}
+            <ul>
+                {{range .Errors}}
+                    <li>{{.Error}}</li>
+                {{end}}
+            </ul>
+        {{end}}
+
+        <div class="container">
+            {{ if eq .Path "/" }} {{template "splash" .}} {{end}}
+            {{ if eq .Path "/blog" }} {{template "blog" .}} {{end}}
+            {{ if eq .Path "/team" }} {{template "team" .}} {{end}}
+            {{ if eq .Path "/portfolio" }} {{template "portfolio" .}} {{end}}
+            {{ if eq .Path "/contact" }} {{template "contact" .}} {{end}}
+            {{ if eq .Path "/login" }} {{template "login" .}} {{end}}
+            {{ if eq .Path "/register" }} {{template "register" .}} {{end}}
+            {{ if eq .Path "/profile" }} {{template "profile" .}} {{end}}
+        </div>
+        <script src="/a/js/node_modules/jquery/dist/jquery.min.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="/a/js/script.js" ></script>
+    </body>
+</html>
+
+{{end}}

@@ -1,0 +1,14 @@
+$colors:(
+        "primary":rgba(gray, .9),
+        "secondary":rgba(lightblue, .9),
+        "light":rgba(beige, .9),
+        "dark":rgba(darkgray, .8)
+);
+
+@function color($name){
+  @return map_get($colors, $name)
+};
+
+@function debug(){
+  @return 1px dashed red
+}

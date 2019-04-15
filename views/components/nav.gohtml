@@ -1,0 +1,30 @@
+{{define "navComponent"}}
+
+
+    {{$active := .CountActiveUsers}}
+    <nav >
+        <div class="nav-wrapper blue">
+
+            <ul class="left hide-on-small">
+{{/*                {{if not $onIndex}} <li><a href="/">Home</a></li> {{end}}*/}}
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/team">Team</a></li>
+                <li><a href="/portfolio">Portfolio</a></li>
+                <li><a href="/contact">Contact</a></li>
+                {{if .LoggedIn}}
+                    <li><a href="/profile">Profile</a></li>
+                    <li class="logout-btn btn red">Logout</li>
+                {{else}}
+                    <li><a href="/register">Register/Login</a></li>
+                {{end}}
+            </ul>
+
+            {{if gt $active 0}}
+                <span class="center">{{$active}}/{{.CountUsers}} <i class="material-icons left" >sentiment_very_satisfied</i></span>
+                {{else}}
+                <span class="center">{{$active}}/{{.CountUsers}} <i class="material-icons left" >sentiment_dissatisfied</i></span>
+            {{end}}
+            <h5 href="#You Go!" class="right">Go Software Solutions</h5>
+        </div>
+    </nav>
+{{end}}

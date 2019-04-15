@@ -1,0 +1,24 @@
+{{define "blog"}}
+
+    {{if .LoggedIn}}
+        <form id="post-form">
+            <input type="text" name="title" placeholder="Title...">
+            <input type="text" name="body" placeholder="Body...">
+            <input type="submit" class="btn" value="Make Post">
+        </form>
+    {{end}}
+
+
+    {{if .Posts}}
+        <ul class="collection">
+
+            {{range .Posts}}
+                <li class="collection-item" >{{.Title}}</li>
+            {{end}}
+
+        </ul>
+    {{else}} <!-- No posts found  -->
+        <h1>No Posts found</h1>
+    {{end}}
+
+{{end}}

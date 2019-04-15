@@ -1,0 +1,11 @@
+{{define "login"}}
+
+    {{if not .LoggedIn}}
+        <form class="loginForm col s6" action="/login" method="POST">
+            <input class="name" type="text" name="name" placeholder="username...">
+            <input class="password" type="password" name="password" placeholder="password...">
+            <input class="submit btn" type="submit" value="Login!">
+        </form>
+    {{end}}
+
+{{end}}

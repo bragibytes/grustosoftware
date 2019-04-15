@@ -1,0 +1,17 @@
+{{define "profile"}}
+
+    <div class="profile" >
+        {{if .LoggedIn}}
+
+        <div class="avatar"></div>
+
+        <ul class="info">
+            <li>{{.LoggedIn.Name}}</li>
+            <li>{{.LoggedIn.Email}}</li>
+        </ul>
+        {{else}}
+        <h1>Hey...you arne't supposed to be here!</h1>
+        {{end}}
+    </div>
+
+{{end}}
