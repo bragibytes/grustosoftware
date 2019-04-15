@@ -28,7 +28,7 @@ func (x *Session) Link(con *Core) {
 	x.core = con
 }
 
-func (x *Session) Save() error {
+func (x *Session) Save() {
 
 	x.ID = bson.NewObjectId()
 	x.CreatedAt = time.Now()
@@ -38,6 +38,4 @@ func (x *Session) Save() error {
 	if err != nil {
 		x.core.AddError(err)
 	}
-	return nil
-
 }

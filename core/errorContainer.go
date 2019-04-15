@@ -29,18 +29,18 @@ func (x *errContainer) Errors() []err {
 }
 
 func (x *errContainer) AddError(e error) {
-	log.Printf("--- adding error --- %v\n", e)
+	log.Printf("\n--- !ERROR! --- %v\n", e.Error())
 	x.errs = append(x.errs, e.(err))
 }
 
-func (x *errContainer) AddErrors(e []error) {
-
-	log.Printf("--- adding errors --- %v\n", e)
-	for _, v := range e {
-		x.AddError(v)
-	}
-	go x.clear()
-}
+//func (x *errContainer) AddErrors(e []error) {
+//
+//	log.Printf("--- adding errors --- %v\n", e)
+//	for _, v := range e {
+//		x.AddError(v)
+//	}
+//	go x.clear()
+//}
 
 func (x *errContainer) ErrorCount() int {
 	return len(x.errs)

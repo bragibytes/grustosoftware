@@ -32,7 +32,9 @@ func NewCore(db *mgo.Database) *Core {
 }
 
 func (x *Core) View(w http.ResponseWriter) {
-	log.Fatal(x.ExecuteTemplate(w, "index", x))
+	if err := x.ExecuteTemplate(w, "index", x);err != nil {
+		x.AddError(err)
+	}
 }
 
 func initTemplates() *template.Template {
@@ -54,7 +56,7 @@ func (x *Core) validateLogin(pu PotentialUser) bool {
 
 	match := user.ComparePasswordWith(pu.Password)
 	if !match {
-		x.AddError(NewError("incorrent password", http.StatusBadRequest))
+		x.AddError(NewError("incorrect password", http.StatusBadRequest))
 		return false
 	}
 	return true
@@ -79,18 +81,15 @@ func (x *Core) Login(w http.ResponseWriter, r *http.Request) {
 	// Everything checks out, making session and cookie
 	exp := time.Now().Add(24 * time.Hour)
 	maxAge := (60 * 60) * 24
-	usr := NewUser(pu, x)
 
+	usr := NewUser(pu, x)
 	sess := NewSession(usr.ID, exp, x)
 
 	if _, err := x.C("sessions").RemoveAll(bson.M{"user_id": sess.UserId}); err != nil {
 		x.AddError(err)
 	}
 
-	if err := sess.Save(); err != nil {
-		x.AddError(NewError(err.Error(), http.StatusInternalServerError))
-		http.Redirect(w, r, x.Path, http.StatusSeeOther)
-	}
+	sess.Save()
 
 	cookie := &http.Cookie{
 		Name:   "session",
@@ -106,9 +105,7 @@ func (x *Core) Login(w http.ResponseWriter, r *http.Request) {
 func (x *Core) Logout(w http.ResponseWriter, r *http.Request) {
 
 	c, err := r.Cookie("session")
-	if err == http.ErrNoCookie {
-		return
-	}
+	if err != nil { return }
 
 	if err := x.C("sessions").Remove(bson.M{"_id": bson.ObjectIdHex(c.Value)}); err != nil {
 		x.AddError(NewError(err.Error(), http.StatusInternalServerError))
@@ -121,21 +118,20 @@ func (x *Core) Logout(w http.ResponseWriter, r *http.Request) {
 
 func (x *Core) CheckState(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session")
-	if err == http.ErrNoCookie {
+	if err != nil {
 		x.LoggedIn = nil
 		return
 	}
 
 	if _, err = x.C("sessions").RemoveAll(bson.M{"expires": bson.M{"$lt": time.Now()}}); err != nil {
-		log.Printf("error removing expired sessions : %v", err.Error())
+		x.AddError(NewError("error removing expired sessions : "+err.Error(), http.StatusInternalServerError))
 	}
 
 	var session *Session
-	err = x.C("sessions").Find(bson.M{"_id": bson.ObjectIdHex(cookie.Value)}).One(&session)
-	if err != nil {
+	if err := x.C("sessions").Find(bson.M{"_id": bson.ObjectIdHex(cookie.Value)}).One(&session);err != nil {
 		x.LoggedIn = nil
 		cookie.MaxAge = -1
-		log.Print("there is a cookie but no session, deleted cookie")
+		log.Print("there is a cookie but no session, deleting cookie")
 		http.SetCookie(w, cookie)
 		return
 	}
@@ -143,7 +139,7 @@ func (x *Core) CheckState(w http.ResponseWriter, r *http.Request) {
 	var user *User
 	if err := x.C("users").Find(bson.M{"_id": session.UserId}).One(&user); err != nil {
 		x.LoggedIn = nil
-		x.AddError(NewError("theres a cookie and a session, but no user : "+err.Error(), 420))
+		x.AddError(NewError("there's a cookie and a session, but no user : "+err.Error(), http.StatusConflict))
 		return
 	}
 
