@@ -6,12 +6,12 @@ import (
 )
 
 type errContainer struct {
-	errs []err
+	errs []error
 }
 
 func NewErrorContainer() *errContainer {
 	x := &errContainer{
-		make([]err, 0),
+		make([]error, 0),
 	}
 
 	return x
@@ -20,17 +20,30 @@ func NewErrorContainer() *errContainer {
 func (x *errContainer) clear() {
 	time.Sleep(10 * time.Second)
 
-	x.errs = make([]err, 0)
+	x.errs = make([]error, 0)
 
 }
 
-func (x *errContainer) Errors() []err {
+func(x *errContainer) ListErrors(){
+	for _, v := range x.errs {
+		log.Printf("\n\n\n %v \n\n\n", v.Error())
+	}
+}
+
+func (x *errContainer) Errors() []error {
 	return x.errs
 }
 
+func (x *errContainer) printErr(es string){
+	log.Print("\n")
+	log.Printf("\n--- !ERROR! --- %v\n", es)
+	log.Print("\n")
+}
+
 func (x *errContainer) AddError(e error) {
-	log.Printf("\n--- !ERROR! --- %v\n", e.Error())
-	x.errs = append(x.errs, e.(err))
+
+	x.errs = append(x.errs, e)
+	go x.clear()
 }
 
 //func (x *errContainer) AddErrors(e []error) {

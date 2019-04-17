@@ -30,7 +30,7 @@ func (pc *PostController) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	var post core.Post
 	if err := schema.NewDecoder().Decode(&post, r.PostForm); err != nil {
-		pc.core.AddError(core.NewError(err.Error(), http.StatusInternalServerError))
+		pc.core.AddError(err)
 		return
 	}
 	post.Link(pc.core)
@@ -38,6 +38,7 @@ func (pc *PostController) Create(w http.ResponseWriter, r *http.Request) {
 	if ok := post.Validate(); !ok {
 		return
 	}
+
 	post.Save()
 
 }

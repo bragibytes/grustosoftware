@@ -1,45 +1,43 @@
-$(document).ready(function () {
-    const con = new BlogController();
-    con.test();
-
-    $('.dropdown-trigger').dropdown();
-
-    // logout
-    $('.logout-btn').bind('click', function(e){
-
-        $.ajax({
-            'url':'/logout',
-            'type':'DELETE',
-            'data':null,
-            'success':()=>window.location.replace("/"),
-            'error':(err)=>console.error(err)
-        })
-    });
-
-    // create post
-    $('#post-form').bind('submit', function (e) {
-        e.preventDefault();
-        console.log(e)
-
-    })
-
-});
-
-class BlogController {
-
-    constructor(){
-        this.title = document.getElementById("title")
-        this.body = document.getElementById("body")
+// if(document.getElementsByClassName('login-form')){
+//     for(let form of document.getElementsByClassName('login-form')){
+//         form.addEventListener('submit', login)
+//     }
+// }
+if(document.getElementsByClassName('logout-btn')){
+    for(let btn of document.getElementsByClassName('logout-btn')){
+        btn.addEventListener('click', logout)
     }
-
-    test(){
-        alert("at least this class is working!!")
-    }
-
 }
 
+function logout() {
 
+    const options = {
+        method:'DELETE'
+    }
 
-
-
-
+    fetch('/logout', options)
+        .then(()=>window.location.replace('/blog'))
+        .catch(err=>console.error(err))
+}
+//
+// function login(e) {
+//     e.preventDefault();
+//
+//     const data = {
+//         name:e.target.elements[0].value,
+//         password:e.target.elements[1].value
+//     }
+//
+//     const options = {
+//         method:'POST',
+//         headers:{
+//             'Content-Type':'application/json'
+//         },
+//         body:JSON.stringify(data)
+//     }
+//
+//     fetch('/login', options)
+//         .catch(err=>console.error(err))
+//
+//
+// }

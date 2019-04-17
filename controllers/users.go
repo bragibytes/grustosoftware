@@ -4,6 +4,7 @@ import (
 	"github.com/badoux/checkmail"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
+	"github.com/pkg/errors"
 	"gopkg.in/mgo.v2/bson"
 	"log"
 	"net/http"
@@ -11,7 +12,7 @@ import (
 )
 
 type UserController struct {
-	core *core.Core
+	*core.Core
 	_mux *mux.Router
 }
 
@@ -28,29 +29,29 @@ func NewUserController(v *core.Core) *UserController {
 func (x *UserController) validate(user core.PotentialUser) bool {
 
 	if user.Name == "" || user.Email == "" || user.Password == "" || user.Cpassword == "" {
-		x.core.AddError(core.NewError("you gave me nil data! says the validate method...", http.StatusBadRequest))
+		x.AddError(errors.New("forget something??? null data in register request"))
 		return false
 	}
 	//password validation
 	if user.Password != user.Cpassword {
-		x.core.AddError(core.NewError("Passwords do not match dummy", http.StatusBadRequest))
+		x.AddError(errors.New("Passwords do not match dummy"))
 	}
 	if len(user.Password) < 8 {
-		x.core.AddError(core.NewError("Password must be at least 8 characters", http.StatusBadRequest))
+		x.AddError(errors.New("Password must be at least 8 characters"))
 	}
 
 	// name validation
 	if len(user.Name) < 3 {
-		x.core.AddError(core.NewError("User name must be at least 3 characters", http.StatusBadRequest))
+		x.AddError(errors.New("name must be at least 3 characters"))
 	}
 
 	// email validation
 	err := checkmail.ValidateFormat(user.Email)
 	if err != nil {
-		x.core.AddError(core.NewError("Invalid Email : "+err.Error(), http.StatusBadRequest))
+		x.AddError(err)
 	}
 
-	if x.core.ErrorCount() > 0 {
+	if x.ErrorCount() > 0 {
 		return false
 	}
 	return true
@@ -58,23 +59,21 @@ func (x *UserController) validate(user core.PotentialUser) bool {
 }
 
 func (x *UserController) Create(w http.ResponseWriter, r *http.Request) {
-	defer http.Redirect(w, r, x.core.Path, http.StatusSeeOther)
+	defer http.Redirect(w, r, x.Path, http.StatusSeeOther)
 
 	if err := r.ParseForm(); err != nil {
-		x.core.AddError(err)
+		x.AddError(err)
 	}
 	var pu core.PotentialUser
 
 	if err := schema.NewDecoder().Decode(&pu, r.PostForm); err != nil {
-		x.core.AddError(core.NewError(err.Error(), http.StatusInternalServerError))
+		x.AddError(err)
 		return
 	}
 
-	if ok := x.validate(pu); !ok {
-		return
-	}
+	if ok := x.validate(pu); !ok { return }
 
-	u := core.NewUser(pu, x.core)
+	u := core.NewUser(pu, x.Core)
 
 	u.Save()
 
@@ -92,7 +91,7 @@ func (x *UserController) Destroy(w http.ResponseWriter, r *http.Request) {
 	objId := bson.ObjectIdHex(id)
 	log.Printf("turned the id into an ObjectId and got %v\n", objId)
 
-	err := x.core.C("users").Remove(bson.D{{"id", objId}})
+	err := x.C("users").Remove(bson.D{{"id", objId}})
 	if err != nil {
 		log.Printf("there was an error deleting the user %v\n", err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)

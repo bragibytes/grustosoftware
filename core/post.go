@@ -1,8 +1,8 @@
 package core
 
 import (
+	"github.com/pkg/errors"
 	. "gopkg.in/mgo.v2/bson"
-	"net/http"
 	"time"
 )
 
@@ -50,11 +50,11 @@ func (x *Post) Validate() bool {
 
 	// title validation
 	if len(x.Title) < 5 {
-		x.core.AddError(NewError("Title too short", http.StatusBadRequest))
+		x.core.AddError(errors.New("Title too short"))
 	}
 	// body validation
 	if len(x.Body) < 10 {
-		x.core.AddError(NewError("Body too short", http.StatusBadRequest))
+		x.core.AddError(errors.New("Body too short"))
 	}
 
 	if x.core.ErrorCount() > 0 {
