@@ -7,15 +7,16 @@ import (
 )
 
 type User struct {
-	ID        ObjectId  `bson:"_id"`
-	Name      string    `bson:"name"`
-	Email     string    `bson:"email"`
-	Password  string    `bson:"password"`
-	Perm      int       `bson:"perm"` // 0 = normal user, 1 = admin
-	Valid     bool      `bson:"valid"`
+	ID        ObjectId `bson:"_id"`
+	Name      string   `bson:"name"`
+	Email     string   `bson:"email"`
+	Bio       string   `bson:"bio"`
+	Password  string   `bson:"password"`
+	Perm      int      `bson:"perm"` // 0 = normal user, 1 = admin
+	Valid     bool     `bson:"valid"`
 	*Core     `bson:"-"`
-	createdAt time.Time `bson:"_createdAt"`
-	updatedAt time.Time `bson:"_updatedAt"`
+	CreatedAt time.Time `bson:"_createdAt"`
+	UpdatedAt time.Time `bson:"_updatedAt"`
 }
 
 func NewUser(pu PotentialUser, core *Core) *User {
@@ -23,7 +24,7 @@ func NewUser(pu PotentialUser, core *Core) *User {
 		Name:     pu.Name,
 		Email:    pu.Email,
 		Password: pu.Password,
-		Core:core,
+		Core:     core,
 	}
 
 	return x
@@ -61,7 +62,6 @@ func (x *User) Posts() []*Post {
 
 func (x *User) ComparePasswordWith(password string) bool {
 
-
 	err := bcrypt.CompareHashAndPassword([]byte(x.Password), []byte(password))
 	if err != nil {
 		x.AddError(err)
@@ -77,8 +77,8 @@ func (x *User) Save() {
 	x.ID = NewObjectId()
 	x.Valid = false
 	x.Perm = 0
-	x.createdAt = time.Now()
-	x.updatedAt = time.Now()
+	x.CreatedAt = time.Now()
+	x.UpdatedAt = time.Now()
 
 	// encrypt password
 	hashed, err := bcrypt.GenerateFromPassword([]byte(x.Password), bcrypt.MinCost)

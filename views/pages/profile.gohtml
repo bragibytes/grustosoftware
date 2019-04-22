@@ -1,4 +1,5 @@
 {{define "profile"}}
+    {{template "head" .}}
 
     <div class="profile" >
         {{if .LoggedIn}}
@@ -14,4 +15,5 @@
         {{end}}
     </div>
 
+    {{template "tail"}}
 {{end}}

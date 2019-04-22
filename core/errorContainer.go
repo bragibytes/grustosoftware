@@ -18,13 +18,13 @@ func NewErrorContainer() *errContainer {
 }
 
 func (x *errContainer) clear() {
-	time.Sleep(10 * time.Second)
+	time.Sleep(5 * time.Second)
 
 	x.errs = make([]error, 0)
 
 }
 
-func(x *errContainer) ListErrors(){
+func (x *errContainer) ListErrors() {
 	for _, v := range x.errs {
 		log.Printf("\n\n\n %v \n\n\n", v.Error())
 	}
@@ -34,7 +34,7 @@ func (x *errContainer) Errors() []error {
 	return x.errs
 }
 
-func (x *errContainer) printErr(es string){
+func (x *errContainer) printErr(es string) {
 	log.Print("\n")
 	log.Printf("\n--- !ERROR! --- %v\n", es)
 	log.Print("\n")

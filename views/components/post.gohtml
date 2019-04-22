@@ -1,5 +1,17 @@
-{{define "postComponent"}}
-    <div class="post">
-        <h1>{{.Title}}</h1>
-    </div>
+{{define "post"}}
+
+
+    <li class="post">
+
+        <div class="collapsible-header row h">
+            <p class="col s10">{{.Title}}</p>
+            <span class="col s2"> <i class="material-icons">person</i>{{.Author.Name}}  <i class="material-icons">comment</i>{{.CommentCount}} </span>
+        </div>
+
+        <div class="collapsible-body">
+            <p>{{.Body}}</p>
+            {{template "comments" .}}
+        </div>
+
+    </li>
 {{end}}

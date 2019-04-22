@@ -1,0 +1,12 @@
+{{define "comment_form"}}
+
+    {{if .LoggedIn}}
+    <form action="/api/comments/" method="POST">
+        <input type="text" name="body" placeholder="Comment...">
+        <input type="submit" value="Comment" class="btn blue">
+
+        <input type="hidden" name="parent" value="{{.IDHex}}">
+    </form>
+    {{end}}
+
+{{end}}

@@ -11,7 +11,6 @@ type Core struct {
 	*template.Template
 	*mgo.Database
 	*errContainer
-	Path     string
 	LoggedIn *User
 }
 
@@ -21,22 +20,20 @@ func NewCore(db *mgo.Database) *Core {
 		initTemplates(),
 		db,
 		NewErrorContainer(),
-		"",
 		nil,
 	}
 
 	return x
 }
 
-func (x *Core) View(w http.ResponseWriter) {
-	if err := x.ExecuteTemplate(w, "index", x);err != nil {
-		x.AddError(err)
+func (x *Core) View(w http.ResponseWriter, tpl string, data interface{}) {
+	if err := x.ExecuteTemplate(w, tpl, data); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
 func initTemplates() *template.Template {
-	tpl := template.Must(template.ParseGlob("views/*.gohtml"))
-	template.Must(tpl.ParseGlob("views/components/*.gohtml"))
+	tpl := template.Must(template.ParseGlob("views/components/*.gohtml"))
 	template.Must(tpl.ParseGlob("views/pages/*.gohtml"))
 
 	return tpl
@@ -77,10 +74,11 @@ func (x *Core) Posts() []*Post {
 
 }
 
-func(x *Core) IconState() string {
+func (x *Core) IconState() string {
 	if x.LoggedIn != nil {
 		return "sentiment_very_satisfied"
-	}else{
-		return "sentiment_dissatisfied"
 	}
+	return "sentiment_dissatisfied"
 }
+
+

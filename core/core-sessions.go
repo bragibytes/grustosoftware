@@ -23,7 +23,7 @@ func (x *Core) validateLogin(pu PotentialUser) (*User, bool) {
 	}
 	user.Link(x)
 
-	if match := user.ComparePasswordWith(pu.Password);!match {
+	if match := user.ComparePasswordWith(pu.Password); !match {
 		x.AddError(errors.New("incorrect password"))
 		return nil, false
 	}
@@ -32,15 +32,15 @@ func (x *Core) validateLogin(pu PotentialUser) (*User, bool) {
 
 func (x *Core) Login(w http.ResponseWriter, r *http.Request) {
 
-	if err := r.ParseForm();err != nil {
+	if err := r.ParseForm(); err != nil {
 		x.AddError(err)
-		http.Redirect(w, r, x.Path, http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 	var pu PotentialUser
-	if err := schema.NewDecoder().Decode(&pu, r.PostForm);err != nil {
+	if err := schema.NewDecoder().Decode(&pu, r.PostForm); err != nil {
 		x.AddError(err)
-		http.Redirect(w, r, x.Path, http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
@@ -53,7 +53,7 @@ func (x *Core) Login(w http.ResponseWriter, r *http.Request) {
 
 	usr, ok := x.validateLogin(pu)
 	if !ok {
-		http.Redirect(w, r, x.Path, http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
@@ -71,7 +71,7 @@ func (x *Core) Login(w http.ResponseWriter, r *http.Request) {
 
 	if err := sess.Save(); err != nil {
 		x.AddError(err)
-		http.Redirect(w, r, x.Path, http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
@@ -82,14 +82,16 @@ func (x *Core) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, cookie)
-	http.Redirect(w, r, "/profile", http.StatusSeeOther)
+	http.Redirect(w, r, "/profile/"+usr.Name, http.StatusSeeOther)
 
 }
 
 func (x *Core) Logout(w http.ResponseWriter, r *http.Request) {
 
 	c, err := r.Cookie("session")
-	if err != nil { return }
+	if err != nil {
+		return
+	}
 
 	if err := x.C("sessions").Remove(bson.M{"_id": bson.ObjectIdHex(c.Value)}); err != nil {
 		x.AddError(err)
@@ -101,6 +103,8 @@ func (x *Core) Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (x *Core) CheckState(w http.ResponseWriter, r *http.Request) {
+
+
 	cookie, err := r.Cookie("session")
 	if err != nil {
 		x.LoggedIn = nil
@@ -123,10 +127,11 @@ func (x *Core) CheckState(w http.ResponseWriter, r *http.Request) {
 	var user *User
 	if err := x.C("users").Find(bson.M{"_id": session.UserId}).One(&user); err != nil {
 		x.LoggedIn = nil
-		x.AddError(errors.New("there's a cookie and a session, but no user : "+err.Error()))
+		x.AddError(errors.New("there's a cookie and a session, but no user : " + err.Error()))
 		return
 	}
 
 	x.LoggedIn = user
+
 
 }

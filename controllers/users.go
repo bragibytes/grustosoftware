@@ -59,7 +59,7 @@ func (x *UserController) validate(user core.PotentialUser) bool {
 }
 
 func (x *UserController) Create(w http.ResponseWriter, r *http.Request) {
-	defer http.Redirect(w, r, x.Path, http.StatusSeeOther)
+	defer http.Redirect(w, r, "/", http.StatusSeeOther)
 
 	if err := r.ParseForm(); err != nil {
 		x.AddError(err)
@@ -71,7 +71,9 @@ func (x *UserController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if ok := x.validate(pu); !ok { return }
+	if ok := x.validate(pu); !ok {
+		return
+	}
 
 	u := core.NewUser(pu, x.Core)
 

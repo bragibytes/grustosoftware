@@ -1,0 +1,21 @@
+{{define "head"}}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Go Software Solutions</title>
+            <link type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+            <link type="text/css" rel="stylesheet" href="/a/css/style.css">
+        </head>
+        <body>
+        {{template "nav" .}}
+
+        {{if .Errors}}
+            <ul>
+                {{range .Errors}}
+                    <li>{{.Error}}</li>
+                {{end}}
+            </ul>
+        {{end}}
+
+{{end}}

@@ -1,30 +1,36 @@
 {{define "nav"}}
 
-
     {{$uc := .UserCount}}
     {{$sc := .SessionCount}}
 
-    <nav >
-        <div class="nav-wrapper blue">
+    <div class="navbar-fixed">
+        <div class="navbar-extended">
+            <nav >
+                <div class="nav-wrapper blue">
 
-            <ul class="left hide-on-small">
-{{/*                {{if not $onIndex}} <li><a href="/">Home</a></li> {{end}}*/}}
-                <li><a href="/blog">Blog</a></li>
-                <li><a href="/team">Team</a></li>
-                <li><a href="/portfolio">Portfolio</a></li>
-                <li><a href="/contact">Contact</a></li>
-                {{if .LoggedIn}}
-                    <li><a href="/profile">Profile</a></li>
-                    <li ><a href="#" class="logout-btn red">Logout</a></li>
-                {{else}}
-                    <li><a href="/register">Register/Login</a></li>
-                {{end}}
-            </ul>
+                    <ul class="left hide-on-small">
+                        <li ><a href="/">Home</a></li>
+                        <li ><a href="/blog">Blog</a></li>
+                        <li ><a href="/portfolio">Portfolio</a></li>
+                        {{if .LoggedIn}}
+                            <li><a href="/profile/{{.LoggedIn.Name}}">Profile</a></li>
+                            <li ><a href="#" class="logout-btn red">Logout</a></li>
+                        {{end}}
+                    </ul>
+                    <span class="center">{{$sc}}/{{$uc}} <i class="material-icons left" >{{.IconState}}</i></span>
 
-
-            <span class="center">{{$sc}}/{{$uc}} <i class="material-icons left" >{{.IconState}}</i></span>
-
-            <h5 href="#You Go!" class="right">Go Software Solutions</h5>
+                    <h5 href="#You Go!" class="right brand-logo">Go Web Solutions</h5>
+                </div>
+{{/*                {{if eq .Path "/blog"}}*/}}
+{{/*                    <ul class="tabs blue">*/}}
+{{/*                        <li class="tab"><a href="#test1">Test 1</a></li>*/}}
+{{/*                        <li class="tab"><a href="#test2">Test 2</a></li>*/}}
+{{/*                        <li class="tab"><a href="#test3">Disabled Tab</a></li>*/}}
+{{/*                        <li class="tab"><a href="#test4">Test 4</a></li>*/}}
+{{/*                    </ul>*/}}
+{{/*                {{end}}*/}}
+            </nav>
         </div>
-    </nav>
+
+    </div>
 {{end}}

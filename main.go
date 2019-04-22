@@ -21,7 +21,6 @@ func startServer(p string) {
 
 func main() {
 	//appengine.Main() // FOR PRODUCTION ONLY
-
 }
 
 func init() {
@@ -38,18 +37,18 @@ func init() {
 	commentController := controllers.NewCommentController(theCore)
 	viewController := controllers.NewViewController(theCore)
 
-	log.Print("--- controllers created")
-
 	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) { http.ServeFile(w, r, "views/assets/images/gopher.png") })
 	http.Handle("/api/users/", http.StripPrefix("/api/users", userController))
-	http.Handle("/api/post/", http.StripPrefix("/api/post", postController))
-	http.Handle("/api/comment/", http.StripPrefix("/api/comment", commentController))
-	http.Handle("/a/", http.StripPrefix("/a", http.FileServer(http.Dir("views/assets"))))
+	http.Handle("/api/posts/", http.StripPrefix("/api/posts", postController))
+	http.Handle("/api/comments/", http.StripPrefix("/api/comments", commentController))
+	http.Handle("/a/", http.StripPrefix("/a", http.FileServer(http.Dir("views/assets/"))))
 
 	http.Handle("/", viewController)
 
-	log.Print("--- routes handled")
-
 	startServer("8080") // FOR DEVELOPMENT ONLY
 
+}
+
+func serveView(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "rview/build/index.html")
 }

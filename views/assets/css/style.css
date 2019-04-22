@@ -4,4 +4,11 @@ html {
   html body {
     height: 100%; }
 
+.post .h {
+  background-color: #26a69a;
+  color: white; }
+.post .comments .ch {
+  background-color: #2196f3;
+  color: white; }
+
 /*# sourceMappingURL=style.css.map */

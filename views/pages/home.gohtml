@@ -1,0 +1,15 @@
+{{define "home"}}
+
+    {{template "head" .}}
+
+        {{if .LoggedIn}}
+            <h1>Logged in</h1>
+        {{else}}
+            <h1>Not Logged In</h1>
+        {{end}}
+
+        <h1>This is the home page</h1>
+
+    {{template "tail"}}
+
+{{end}}

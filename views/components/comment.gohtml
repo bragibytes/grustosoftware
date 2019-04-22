@@ -1,5 +1,12 @@
-{{define "commentComponent"}}
-    <div class="commentComponent">
-        <p>{{.Body}}</p>
-    </div>
+{{ define "comment" }}
+    <li class="comment collection-item row">
+        <p class="col s10">{{.Body}}</p>
+        <div class="col s2">
+            <i class="material-icons">person</i> {{.Author.Name}}
+            <i class="material-icons">comment</i> {{.CommentCount}}
+        </div>
+        <div class="col s12">
+            {{template "comments" .}}
+        </div>
+    </li>
 {{end}}

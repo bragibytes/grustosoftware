@@ -1,4 +1,5 @@
 {{define "register"}}
+    {{template "head" .}}
 
     {{if not .LoggedIn}}
         <div class="row">
@@ -17,4 +18,5 @@
 
     {{end}}
 
+    {{template "tail"}}
 {{end}}

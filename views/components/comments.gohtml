@@ -1,0 +1,24 @@
+{{define "comments"}}
+
+    {{if .Comments}}
+        <ul class="collapsible">
+            <li class="comments">
+                <div class="collapsible-header ch">
+                    Comments... ( {{.CommentCount}} )
+                </div>
+                <div class="collapsible-body">
+                    {{template "comment_form" .}}
+                    <ul class="collection">
+                        {{range .Comments}}
+                            {{template "comment" .}}
+                        {{end}}
+                    </ul>
+                </div>
+            </li>
+        </ul>
+
+    {{else}}
+        {{template "comment_form" .}}
+    {{end}}
+
+{{end}}
