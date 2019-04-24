@@ -1,0 +1,13 @@
+{{define "post_form"}}
+
+    {{if .LoggedIn}}
+        <form action="/api/posts/" method="POST">
+            <input type="text" name="title" placeholder="Title...">
+            <input type="text" name="body" placeholder="Body...">
+            <input type="submit" class="btn" value="Post">
+        </form>
+    {{else}}
+        <a href="/blog/register">Login/Register</a>
+    {{end}}
+
+{{end}}

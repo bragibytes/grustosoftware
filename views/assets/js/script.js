@@ -1,51 +1,21 @@
+M.AutoInit();
 
-// Materialize Inits
-$(document).ready(function(){
-    $('.collapsible').collapsible();
-
-    $('.logout-btn').bind('click', logout)
-});
-
-function submitPost(e){
-
-}
-
-function submitComment(e, parent){
-
+function submitComment(e, post){
     e.preventDefault();
-    console.log("e is ", e);
+    const form = document.getElementsByClassName('comment-form')[0];
+    const cbody = form.valueOf('body');
 
-    console.log("getting to the submitComment function with e as ", e, "\n", "and _parent as ", parent);
-
-    // const body = e.target.valueOf("comment");
-    //
-    // const options = {
-    //     method:'POST',
-    //     headers:{
-    //         "Content-Type":"application/json",
-    //         "Accept":"application/json"
-    //     },
-    //     data:JSON.stringify({
-    //         body:body,
-    //         _parent:parent
-    //     })
-    // };
-    //
-    // fetch("/api/comments/", options)
-    //     .then(res=>console.log(res))
-    //     .catch(err=>console.log(err))
-
-
+    alert("here is the post ", JSON.stringify(post))
 }
 
 function logout() {
 
     const options = {
         method:'DELETE'
-    }
+    };
 
     fetch('/logout', options)
-        .then(()=>window.location.replace('/blog'))
+        .then(()=>window.location.replace('/'))
         .catch(err=>console.error(err))
-}
+};
 

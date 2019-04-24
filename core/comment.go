@@ -7,31 +7,45 @@ import (
 )
 
 type Comment struct {
+	*Core     `bson:"-" json:"-"`
 	ID        ObjectId `bson:"_id" json:"_id"`
 	Body      string   `bson:"body" json:"body"`
 	Parent    ObjectId `bson:"_parent" json:"_parent"`
 	AuthorID  ObjectId `bson:"_author" json:"_author"`
-	*Core     `bson:"-" json:"-"`
+	Score int8 `bson:"-"`
 	CreatedAt time.Time `bson:"_createdAt" json:"_createdAt"`
 	UpdatedAt time.Time `bson:"_updatedAt" json:"_updatedAt"`
 }
 
 func (x *Comment) IDHex() string {
+
+
 	return x.ID.Hex()
 }
 
-//func NewComment(body string, core *Core) *Comment {
-//	x := &Comment{
-//
-//		Body: body,
-//		Core: core,
-//	}
-//
-//	return x
-//}
-
 func (x *Comment) Link(core *Core) {
 	x.Core = core
+
+	x.calculateScore()
+}
+
+func (c *Comment) calculateScore(){
+	var votes []Vote
+	if err := c.C("votes").Find(M{"_parent":c.ID}).All(&votes); err != nil {
+		c.AddError(err)
+		return
+	}
+
+	var score int8 = 0
+	for _, v := range votes {
+		if v.Value == "up" {
+			c.Score++
+		}else if v.Value == "down"{
+			c.Score--
+		}
+	}
+
+	c.Score = score
 }
 
 func (x *Comment) Validate() bool {

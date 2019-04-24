@@ -1,17 +1,17 @@
 {{define "post"}}
 
-
-    <li class="post">
-
-        <div class="collapsible-header row h">
+    <li class="post z-depth-2">
+        <div class="collapsible-header row blue lighten-4">
             <p class="col s10">{{.Title}}</p>
-            <span class="col s2"> <i class="material-icons">person</i>{{.Author.Name}}  <i class="material-icons">comment</i>{{.CommentCount}} </span>
+            <div class="col s2">
+                <i class="material-icons">person</i><a href="/profile/{{.Author.Name}}">{{.Author.Name}}</a>
+                {{template "comment_form" .}}<span>{{.CommentCount}}</span>
+            </div>
         </div>
-
-        <div class="collapsible-body">
+        <div class="collapsible-body z-depth-3">
             <p>{{.Body}}</p>
             {{template "comments" .}}
         </div>
-
     </li>
+
 {{end}}

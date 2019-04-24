@@ -1,15 +1,13 @@
 {{define "home"}}
 
     {{template "head" .}}
+    <div class="home-page">
+        <section class="header section"></section>
+        <section class="about section"></section>
+        <section class="contact section"></section>
+        <footer class="page-footer"></footer>
 
-        {{if .LoggedIn}}
-            <h1>Logged in</h1>
-        {{else}}
-            <h1>Not Logged In</h1>
-        {{end}}
-
-        <h1>This is the home page</h1>
-
+    </div>
     {{template "tail"}}
 
 {{end}}

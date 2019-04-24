@@ -24,7 +24,8 @@ func NewViewController(core *core.Core) *ViewController {
 
 func (x *ViewController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	go x.CheckState(w, r)
+	x.Path = r.URL.Path
+	x.CheckState(w, r)
 	x._mux.ServeHTTP(w, r)
 }
 

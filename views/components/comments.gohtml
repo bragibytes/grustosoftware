@@ -2,12 +2,11 @@
 
     {{if .Comments}}
         <ul class="collapsible">
-            <li class="comments">
-                <div class="collapsible-header ch">
-                    Comments... ( {{.CommentCount}} )
+            <li>
+                <div class="collapsible-header green lighten-5">
+                    <a href="#!">comments...</a>
                 </div>
                 <div class="collapsible-body">
-                    {{template "comment_form" .}}
                     <ul class="collection">
                         {{range .Comments}}
                             {{template "comment" .}}
@@ -17,8 +16,6 @@
             </li>
         </ul>
 
-    {{else}}
-        {{template "comment_form" .}}
     {{end}}
 
 {{end}}

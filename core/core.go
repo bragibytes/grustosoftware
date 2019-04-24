@@ -5,6 +5,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"html/template"
 	"net/http"
+	"sort"
 )
 
 type Core struct {
@@ -12,6 +13,7 @@ type Core struct {
 	*mgo.Database
 	*errContainer
 	LoggedIn *User
+	Path string
 }
 
 func NewCore(db *mgo.Database) *Core {
@@ -21,6 +23,7 @@ func NewCore(db *mgo.Database) *Core {
 		db,
 		NewErrorContainer(),
 		nil,
+		"",
 	}
 
 	return x
@@ -70,15 +73,28 @@ func (x *Core) Posts() []*Post {
 		p.Link(x)
 	}
 
+	sort.Slice(posts, func(i, j int)bool{
+		return posts[i].Score < posts[j].Score
+	})
+
 	return posts
 
 }
 
 func (x *Core) IconState() string {
 	if x.LoggedIn != nil {
-		return "sentiment_very_satisfied"
+		return "green"
 	}
-	return "sentiment_dissatisfied"
+	return  "pulse red"
 }
+
+func (x *Core) IconClick() string {
+	if x.LoggedIn != nil {
+		return "#"
+	}
+	return  "#modal"
+}
+
+
 
 

@@ -1,14 +1,12 @@
 @import url(normalize.css);
-html {
+html, body {
   height: 100%; }
-  html body {
-    height: 100%; }
 
-.post .h {
-  background-color: #26a69a;
-  color: white; }
-.post .comments .ch {
-  background-color: #2196f3;
-  color: white; }
+.home-page .header {
+  background: url("../images/rustGo.png");
+  background-size: cover;
+  background-position: center;
+  border: 1px dotted blue;
+  height: 70vh; }
 
 /*# sourceMappingURL=style.css.map */

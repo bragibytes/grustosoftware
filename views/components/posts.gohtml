@@ -1,0 +1,14 @@
+{{define "posts"}}
+
+    {{if .}}
+        <ul class="collapsible">
+            {{range .}}
+                {{template "post" .}}
+            {{end}}
+        </ul>
+    {{else}} <!-- No posts found  -->
+    <blockquote>
+        As you can clearly see there are no posts here
+    </blockquote>
+    {{end}}
+{{end}}

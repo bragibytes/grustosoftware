@@ -2,35 +2,41 @@
 
     {{$uc := .UserCount}}
     {{$sc := .SessionCount}}
-
     <div class="navbar-fixed">
-        <div class="navbar-extended">
-            <nav >
-                <div class="nav-wrapper blue">
+        <nav class="nav-wrapper blue lighten-1">
+            <div class="container">
+                <a href="#!" class="hide-on-large sidenav-trigger" data-target="mobile-nav"><i class="material-icons">menu</i></a>
+                <ul class="hide-on-med-and-down">
+                    <li ><a href="/">Home</a></li>
+                    <li ><a href="/blog">Blog</a></li>
+                    <li ><a href="/portfolio">Portfolio</a></li>
+                    {{if .LoggedIn}}
+                    <li><a href="/profile/{{.LoggedIn.Name}}">Profile</a></li>
+                </ul>
+                <a onclick="logout()" href="#" class="red right">Logout</a>
+                {{end}}
+                <a href="{{.IconClick}}" class="center-align btn-floating waves-effect waves-light {{.IconState}} modal-trigger">{{$sc}}/{{$uc}}</a>
+            </div>
 
-                    <ul class="left hide-on-small">
-                        <li ><a href="/">Home</a></li>
-                        <li ><a href="/blog">Blog</a></li>
-                        <li ><a href="/portfolio">Portfolio</a></li>
-                        {{if .LoggedIn}}
-                            <li><a href="/profile/{{.LoggedIn.Name}}">Profile</a></li>
-                            <li ><a href="#" class="logout-btn red">Logout</a></li>
-                        {{end}}
-                    </ul>
-                    <span class="center">{{$sc}}/{{$uc}} <i class="material-icons left" >{{.IconState}}</i></span>
+        </nav>
+    </div>
+    <ul class="sidenav" id="mobile-nav">
+        <li ><a href="/">Home</a></li>
+        <li ><a href="/blog">Blog</a></li>
+        <li ><a href="/portfolio">Portfolio</a></li>
+        {{if .LoggedIn}}
+            <li><a href="/profile/{{.LoggedIn.Name}}">Profile</a></li>
+            <li><a href="#!" class="logout-btn red-text">Logout</a></li>
+        {{end}}
+    </ul>
 
-                    <h5 href="#You Go!" class="right brand-logo">Go Web Solutions</h5>
-                </div>
-{{/*                {{if eq .Path "/blog"}}*/}}
-{{/*                    <ul class="tabs blue">*/}}
-{{/*                        <li class="tab"><a href="#test1">Test 1</a></li>*/}}
-{{/*                        <li class="tab"><a href="#test2">Test 2</a></li>*/}}
-{{/*                        <li class="tab"><a href="#test3">Disabled Tab</a></li>*/}}
-{{/*                        <li class="tab"><a href="#test4">Test 4</a></li>*/}}
-{{/*                    </ul>*/}}
-{{/*                {{end}}*/}}
-            </nav>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            {{template "login" .}}
         </div>
-
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
     </div>
 {{end}}
+<!-- Modal Structure -->

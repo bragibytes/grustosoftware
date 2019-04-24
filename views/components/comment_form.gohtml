@@ -1,12 +1,23 @@
 {{define "comment_form"}}
 
     {{if .LoggedIn}}
-    <form action="/api/comments/" method="POST">
-        <input type="text" name="body" placeholder="Comment...">
-        <input type="submit" value="Comment" class="btn blue">
-
-        <input type="hidden" name="parent" value="{{.IDHex}}">
-    </form>
+        <a href="#commentModal{{.IDHex}}" class="modal-trigger"><i class="material-icons green-text">comment</i></a>
+    {{else}}
+        <i class="material-icons">comment</i>
     {{end}}
+    <!-- Modal Structure -->
+    <div id="commentModal{{.IDHex}}" class="modal">
+        <div class="modal-content">
+            <form action="/api/comments/" method="POST">
+                <input type="text" name="body" placeholder="Comment...">
+                <input type="submit" value="Write Comment">
+                <input type="hidden" name="parent" value="{{.IDHex}}">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
 
 {{end}}
+

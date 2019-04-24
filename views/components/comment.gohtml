@@ -1,12 +1,10 @@
 {{ define "comment" }}
     <li class="comment collection-item row">
-        <p class="col s10">{{.Body}}</p>
-        <div class="col s2">
-            <i class="material-icons">person</i> {{.Author.Name}}
-            <i class="material-icons">comment</i> {{.CommentCount}}
-        </div>
-        <div class="col s12">
-            {{template "comments" .}}
+        <p class="center-align body col s10">{{.Body}}</p>
+        <div class="info col s2 push-1">
+            <i class="material-icons">person</i><a href="/profile/{{.Author.Name}}">{{.Author.Name}}</a>
+            {{template "comment_form" .}}{{.CommentCount}}
         </div>
     </li>
+    {{template "comments" .}}
 {{end}}

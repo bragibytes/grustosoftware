@@ -1,19 +1,21 @@
 {{define "profile"}}
     {{template "head" .}}
 
-    <div class="profile" >
-        {{if .LoggedIn}}
 
-        <div class="avatar"></div>
+        <div class="profile" >
 
-        <ul class="info">
-            <li>{{.LoggedIn.Name}}</li>
-            <li>{{.LoggedIn.Email}}</li>
-        </ul>
-        {{else}}
-        <h1>Hey...you arne't supposed to be here!</h1>
-        {{end}}
-    </div>
+            {{if .LoggedIn}}
+                <div class="avatar"></div>
+
+                <ul class="info">
+                    <li>{{.Name}}</li>
+                    <li>{{.Email}}</li>
+                </ul>
+                {{template "posts" .Posts}}
+                {{template "comments" .Comments}}
+            {{end}}
+
+        </div>
 
     {{template "tail"}}
 {{end}}

@@ -45,6 +45,11 @@ func (x *UserController) validate(user core.PotentialUser) bool {
 		x.AddError(errors.New("name must be at least 3 characters"))
 	}
 
+	var u core.User
+	if err := x.C("users").Find(bson.M{"name":user.Name}).One(&u);err == nil {
+		x.AddError(errors.Errorf("username already exists"))
+	}
+
 	// email validation
 	err := checkmail.ValidateFormat(user.Email)
 	if err != nil {

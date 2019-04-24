@@ -8,27 +8,49 @@ import (
 )
 
 type Post struct {
+	*Core     `bson:"-"`
 	ID        ObjectId `bson:"_id"`
 	Title     string   `bson:"title"`
 	Body      string   `bson:"body"`
 	AuthorID  ObjectId `bson:"_author"`
-	*Core     `bson:"-"`
+	Score int8 `bson:"-"`
 	CreatedAt time.Time `bson:"_createdAt"`
 	UpdatedAt time.Time `bson:"_updatedAt"`
 }
 
-func NewPost(title, body string, author ObjectId, con *Core) *Post {
-	x := &Post{
-		Title: title,
-		Body:  body,
-		Core:  con,
-	}
+//func NewPost(title, body string, author ObjectId, con *Core) *Post {
+//	x := &Post{
+//		Title: title,
+//		Body:  body,
+//		Core:  con,
+//	}
+//
+//	return x
+//}
 
-	return x
+func (p *Post) Link(con *Core) {
+	p.Core = con
+
+	p.calculateScore()
 }
 
-func (x *Post) Link(con *Core) {
-	x.Core = con
+func (p *Post) calculateScore(){
+	var votes []Vote
+	if err := p.C("votes").Find(M{"_parent":p.ID}).All(&votes); err != nil {
+		p.AddError(err)
+		return
+	}
+
+	var score int8 = 0
+	for _, v := range votes {
+		if v.Value == "up" {
+			p.Score++
+		}else if v.Value == "down"{
+				p.Score--
+		}
+	}
+
+	p.Score = score
 }
 
 func (x *Post) Comments() []*Comment {
@@ -56,6 +78,8 @@ func (x *Post) CommentCount() int {
 }
 
 func (x *Post) IDHex() string {
+
+
 	return x.ID.Hex()
 }
 

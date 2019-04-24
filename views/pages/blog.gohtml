@@ -1,28 +1,9 @@
 {{define "blog"}}
     {{template "head" .}}
 
-    {{if .LoggedIn}}
-        <form action="/api/posts/" method="POST">
-            <input type="text" name="title" placeholder="Title...">
-            <input type="text" name="body" placeholder="Body...">
-            <input type="submit" class="btn" value="Post">
-        </form>
-    {{else}}
-        <a href="/blog/register">Login/Register</a>
-    {{end}}
+        {{template "post_form" .}}
 
-
-    {{if .Posts}}
-        <ul class="collapsible">
-            {{range .Posts}}
-                {{template "post" .}}
-            {{end}}
-        </ul>
-    {{else}} <!-- No posts found  -->
-        <blockquote>
-            As you can clearly see there are no posts here
-        </blockquote>
-    {{end}}
+        {{template "posts" .Posts}}
 
     {{template "tail"}}
 {{end}}
