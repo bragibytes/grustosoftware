@@ -1,6 +1,6 @@
 {{define "comments"}}
 
-    {{if .Comments}}
+    {{if .}}
         <ul class="collapsible">
             <li>
                 <div class="collapsible-header green lighten-5">
@@ -8,7 +8,7 @@
                 </div>
                 <div class="collapsible-body">
                     <ul class="collection">
-                        {{range .Comments}}
+                        {{range .}}
                             {{template "comment" .}}
                         {{end}}
                     </ul>

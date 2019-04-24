@@ -28,8 +28,8 @@ type Post struct {
 //	return x
 //}
 
-func (p *Post) Link(con *Core) {
-	p.Core = con
+func (p *Post) Link(core *Core) {
+	p.Core = core
 
 	p.calculateScore()
 }
@@ -41,7 +41,6 @@ func (p *Post) calculateScore(){
 		return
 	}
 
-	var score int8 = 0
 	for _, v := range votes {
 		if v.Value == "up" {
 			p.Score++
@@ -49,8 +48,6 @@ func (p *Post) calculateScore(){
 				p.Score--
 		}
 	}
-
-	p.Score = score
 }
 
 func (x *Post) Comments() []*Comment {

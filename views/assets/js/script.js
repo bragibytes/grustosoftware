@@ -1,11 +1,26 @@
 M.AutoInit();
 
-function submitComment(e, post){
-    e.preventDefault();
-    const form = document.getElementsByClassName('comment-form')[0];
-    const cbody = form.valueOf('body');
+function vote(type, id){
 
-    alert("here is the post ", JSON.stringify(post))
+    console.log("type is : ", type);
+    console.log("id is : ", id);
+
+    const data = {
+        value:type,
+        _parent:id,
+    };
+
+    const options = {
+        method:'POST',
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(data),
+    };
+
+    fetch("/api/votes/", options)
+        .then(res=>console.log(res))
+        .catch(err => console.error(err))
 }
 
 function logout() {

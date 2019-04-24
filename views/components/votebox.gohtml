@@ -1,0 +1,21 @@
+{{define "votebox"}}
+    {{if .LoggedIn}}
+        <div>
+            <a href="#!">
+                <i
+                        onclick="vote('up', {{.IDHex}})"
+                        class="material-icons orange-text"
+                >arrow_upward</i>
+            </a>
+
+            {{.Score}}
+
+            <a href="#!">
+                <i
+                        onclick="vote('down', {{.IDHex}})"
+                        class="material-icons indigo-text"
+                >arrow_downward</i>
+            </a>
+        </div>
+    {{end}}
+{{end}}

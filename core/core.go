@@ -31,7 +31,7 @@ func NewCore(db *mgo.Database) *Core {
 
 func (x *Core) View(w http.ResponseWriter, tpl string, data interface{}) {
 	if err := x.ExecuteTemplate(w, tpl, data); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		x.AddError(err)
 	}
 }
 
@@ -73,12 +73,18 @@ func (x *Core) Posts() []*Post {
 		p.Link(x)
 	}
 
-	sort.Slice(posts, func(i, j int)bool{
-		return posts[i].Score < posts[j].Score
-	})
+	x.SortHighestPostTo("top", posts)
 
 	return posts
 
+}
+
+func (x *Core) SortHighestPostTo(where string, posts []*Post){
+	if where == "top" {
+		sort.Slice(posts, func(i, j int)bool{
+			return posts[i].Score > posts[j].Score
+		})
+	}
 }
 
 func (x *Core) IconState() string {

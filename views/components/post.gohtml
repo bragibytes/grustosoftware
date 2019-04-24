@@ -10,7 +10,8 @@
         </div>
         <div class="collapsible-body z-depth-3">
             <p>{{.Body}}</p>
-            {{template "comments" .}}
+            {{template "votebox" .}}
+            {{template "comments" .Comments}}
         </div>
     </li>
 

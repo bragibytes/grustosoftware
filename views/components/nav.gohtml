@@ -3,7 +3,7 @@
     {{$uc := .UserCount}}
     {{$sc := .SessionCount}}
     <div class="navbar-fixed">
-        <nav class="nav-wrapper blue lighten-1">
+        <nav class="nav-wrapper blue">
             <div class="container">
                 <a href="#!" class="hide-on-large sidenav-trigger" data-target="mobile-nav"><i class="material-icons">menu</i></a>
                 <ul class="hide-on-med-and-down">
@@ -13,8 +13,8 @@
                     {{if .LoggedIn}}
                     <li><a href="/profile/{{.LoggedIn.Name}}">Profile</a></li>
                 </ul>
-                <a onclick="logout()" href="#" class="red right">Logout</a>
-                {{end}}
+                    <a onclick="logout()" href="#" class="red right">Logout</a>
+                    {{end}}
                 <a href="{{.IconClick}}" class="center-align btn-floating waves-effect waves-light {{.IconState}} modal-trigger">{{$sc}}/{{$uc}}</a>
             </div>
 
@@ -35,6 +35,7 @@
             {{template "login" .}}
         </div>
         <div class="modal-footer">
+            <a href="/register">Register Here</a>
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
         </div>
     </div>

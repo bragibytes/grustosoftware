@@ -7,6 +7,7 @@ import (
 )
 
 type User struct {
+	*Core     `bson:"-"`
 	ID        ObjectId `bson:"_id"`
 	Name      string   `bson:"name"`
 	Email     string   `bson:"email"`
@@ -14,7 +15,6 @@ type User struct {
 	Password  string   `bson:"password"`
 	Perm      int      `bson:"perm"` // 0 = normal user, 1 = admin
 	Valid     bool     `bson:"valid"`
-	*Core     `bson:"-"`
 	CreatedAt time.Time `bson:"_createdAt"`
 	UpdatedAt time.Time `bson:"_updatedAt"`
 }
@@ -56,6 +56,8 @@ func (x *User) Posts() []*Post {
 	for _, v := range posts {
 		v.Link(x.Core)
 	}
+
+	x.SortHighestPostTo("top", posts)
 
 	return posts
 }

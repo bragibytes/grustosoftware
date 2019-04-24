@@ -42,6 +42,7 @@ func (x *errContainer) printErr(es string) {
 
 func (x *errContainer) AddError(e error) {
 
+	x.printErr(e.Error())
 	x.errs = append(x.errs, e)
 	go x.clear()
 }
