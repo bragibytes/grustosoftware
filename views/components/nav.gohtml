@@ -3,7 +3,7 @@
     {{$uc := .UserCount}}
     {{$sc := .SessionCount}}
     <div class="navbar-fixed">
-        <nav class="nav-wrapper blue">
+        <nav class="nav-wrapper">
             <div class="container">
                 <a href="#!" class="hide-on-large sidenav-trigger" data-target="mobile-nav"><i class="material-icons">menu</i></a>
                 <ul class="hide-on-med-and-down">
@@ -15,7 +15,7 @@
                 </ul>
                     <a onclick="logout()" href="#" class="red right">Logout</a>
                     {{end}}
-                <a href="{{.IconClick}}" class="center-align btn-floating waves-effect waves-light {{.IconState}} modal-trigger">{{$sc}}/{{$uc}}</a>
+                <a href="{{.IconClick}}" class="state-icon center-align btn-floating waves-effect waves-light {{.IconState}} modal-trigger">{{$sc}}/{{$uc}}</a>
             </div>
 
         </nav>

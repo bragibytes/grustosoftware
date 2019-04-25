@@ -2,11 +2,27 @@
 html, body {
   height: 100%; }
 
+nav {
+  background-color: #35b3bf; }
+  nav .state-icon {
+    background-color: beige;
+    color: grey; }
+
+.home-page .parallax-container {
+  height: 50vh; }
 .home-page .header {
   background: url("../images/rustGo.png");
   background-size: cover;
   background-position: center;
   border: 1px dotted blue;
+  height: 70vh; }
+.home-page .about {
+  height: 70vh; }
+  .home-page .about h1 span {
+    color: #35b3bf; }
+    .home-page .about h1 span span {
+      color: rgba(162, 45, 15, 0.7); }
+.home-page .contact {
   height: 70vh; }
 
 /*# sourceMappingURL=style.css.map */

@@ -89,9 +89,9 @@ func (x *Core) SortHighestPostTo(where string, posts []*Post){
 
 func (x *Core) IconState() string {
 	if x.LoggedIn != nil {
-		return "green"
+		return ""
 	}
-	return  "pulse red"
+	return  "pulse"
 }
 
 func (x *Core) IconClick() string {

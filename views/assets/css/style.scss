@@ -1,16 +1,44 @@
 @import "normalize.css";
+@import "theme.scss";
 
 html, body {
   height:100%;
 }
 
+nav {
+  background-color: color("primary");
+
+  .state-icon {
+    background-color: beige;
+    color:grey;
+  }
+}
+
 .home-page {
+
+  .parallax-container {
+    height:50vh;
+  }
   //border:1px dotted red;
   .header {
     background: url("../images/rustGo.png");
     background-size: cover;
     background-position: center;
     border:1px dotted blue;
+    height:70vh;
+  }
+  .about {
+    height:70vh;
+    h1 {
+      span {
+        color:color("primary");
+        span {
+          color:color("secondary");
+        }
+      }
+    }
+  }
+  .contact {
     height:70vh;
   }
 }
