@@ -1,0 +1,50 @@
+{{define "project_form"}}
+
+    {{if .}}
+        <form action="/api/projects/" method="POST">
+            <div class="input-field">
+                <input type="text" id="name" name="name">
+                <label for="name">Name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="description" name="description">
+                <label for="description">Description</label>
+            </div>
+
+            <div class="input-field">
+                <input type="text" id="imageLink" name="imageLink">
+                <label for="imageLink">Image Link</label>
+            </div>
+
+            <div class="input-field">
+                <input type="text" id="projectLink" name="projectLink">
+                <label for="projectLink">Project Link</label>
+            </div>
+
+            <div class="input-field">
+                <input type="text" id="codeLink" name="codeLink">
+                <label for="codeLink">Code Link</label>
+            </div>
+
+            <input class="btn" type="submit" value="Post Project">
+
+        </form>
+    {{end}}
+
+
+
+{{end}}
+
+
+{{/*type Project struct {*/}}
+{{/**Core       `bson:"-"`*/}}
+{{/*ID          bson.ObjectId `bson:"_id"`*/}}
+{{/*Name        string        `bson:"name"`*/}}
+{{/*ImageLink   string        `bson:"imageLink"`*/}}
+{{/*Description string        `bson:"description"`*/}}
+{{/*ProjectLink string        `bson:"link"`*/}}
+{{/*CodeLink    string        `bson:"codeLink"`*/}}
+{{/*AuthorID    bson.ObjectId `bson:"_author"`*/}}
+{{/*CreatedAt   time.Time     `bson:"_createdAt"`*/}}
+{{/*UpdatedAt   time.Time     `bson:"_updatedAt"`*/}}
+{{/*}*/}}

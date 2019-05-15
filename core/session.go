@@ -6,12 +6,12 @@ import (
 )
 
 type Session struct {
+	*Core     `bson:"-"`
 	ID        bson.ObjectId `bson:"_id"`
 	UserId    bson.ObjectId `bson:"_user"`
 	Expires   time.Time     `bson:"expires"`
-	*Core     `bson:"-"`
-	CreatedAt time.Time `bson:"_createdAt"`
-	UpdatedAt time.Time `bson:"_updatedAt"`
+	CreatedAt time.Time     `bson:"_createdAt"`
+	UpdatedAt time.Time     `bson:"_updatedAt"`
 }
 
 func NewSession(id bson.ObjectId, exp time.Time, core *Core) *Session {

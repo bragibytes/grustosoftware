@@ -3,7 +3,9 @@
 
         {{template "post_form" .}}
 
-        {{template "posts" .Posts}}
+        <div class="container">
+            {{template "posts" .Posts}}
+        </div>
 
     {{template "tail"}}
 {{end}}

@@ -19,7 +19,10 @@ function vote(type, id){
     };
 
     fetch("/api/votes/", options)
-        .then(res=>console.log(res))
+        .then(res=>{
+            console.log(res);
+            window.location.reload();
+        })
         .catch(err => console.error(err))
 }
 
@@ -33,4 +36,3 @@ function logout() {
         .then(()=>window.location.replace('/'))
         .catch(err=>console.error(err))
 };
-

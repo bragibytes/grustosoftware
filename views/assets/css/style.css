@@ -1,28 +1,39 @@
-@import url(normalize.css);
+@import "normalize.css";
 html, body {
-  height: 100%; }
+  height: 100vh;
+}
 
 nav {
-  background-color: #35b3bf; }
-  nav .state-icon {
-    background-color: beige;
-    color: grey; }
+  background-color: #68d0db;
+}
+nav li {
+  color: black;
+}
+nav .state-icon {
+  background-color: beige;
+  color: grey;
+}
 
-.home-page .parallax-container {
-  height: 50vh; }
-.home-page .header {
-  background: url("../images/rustGo.png");
-  background-size: cover;
-  background-position: center;
+.home-page {
   border: 1px dotted blue;
-  height: 70vh; }
+  height: 90%;
+}
 .home-page .about {
-  height: 70vh; }
-  .home-page .about h1 span {
-    color: #35b3bf; }
-    .home-page .about h1 span span {
-      color: rgba(162, 45, 15, 0.7); }
-.home-page .contact {
-  height: 70vh; }
+  border: 1px dotted green;
+  height: 100%;
+}
+.home-page .about h1 span {
+  color: blue;
+}
+.home-page .about h1 span span {
+  color: red;
+}
+.home-page footer {
+  background-color: #68d0db;
+}
+
+.profile .avatar img {
+  border: 1px dotted red;
+}
 
 /*# sourceMappingURL=style.css.map */

@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"gopkg.in/mgo.v2"
+	"grustosoftware/controllers"
+	"grustosoftware/core"
 	"log"
-	"sambragge/go-software-solutions/controllers"
-	"sambragge/go-software-solutions/core"
+
+	"gopkg.in/mgo.v2"
 
 	//"google.golang.org/appengine" // FOR PRODUCTION ONLY
 	"net/http"
@@ -31,18 +32,20 @@ func init() {
 	}
 	defer s.Close()
 
-	theCore := core.NewCore(s.DB("go-software-solutions"))
+	theCore := core.NewCore(s.DB("grusto"))
 	userController := controllers.NewUserController(theCore)
 	postController := controllers.NewPostController(theCore)
 	commentController := controllers.NewCommentController(theCore)
 	voteController := controllers.NewVoteController(theCore)
 	viewController := controllers.NewViewController(theCore)
+	projectController := controllers.NewProjectController(theCore)
 
 	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) { http.ServeFile(w, r, "views/assets/images/gopher.png") })
 	http.Handle("/api/users/", http.StripPrefix("/api/users", userController))
 	http.Handle("/api/posts/", http.StripPrefix("/api/posts", postController))
 	http.Handle("/api/comments/", http.StripPrefix("/api/comments", commentController))
 	http.Handle("/api/votes/", http.StripPrefix("/api/votes", voteController))
+	http.Handle("/api/projects/", http.StripPrefix("/api/projects", projectController))
 	http.Handle("/a/", http.StripPrefix("/a", http.FileServer(http.Dir("views/assets/"))))
 
 	http.Handle("/", viewController)

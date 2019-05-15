@@ -1,10 +1,11 @@
 package controllers
 
 import (
+	"grustosoftware/core"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
-	"net/http"
-	"sambragge/go-software-solutions/core"
 )
 
 type CommentController struct {
@@ -23,7 +24,7 @@ func NewCommentController(core *core.Core) *CommentController {
 }
 
 func (x *CommentController) Create(w http.ResponseWriter, r *http.Request) {
-	defer http.Redirect(w, r, "/", http.StatusSeeOther)
+	defer http.Redirect(w, r, x.Path, http.StatusSeeOther)
 
 	if err := r.ParseForm(); err != nil {
 		x.AddError(err)
@@ -35,11 +36,6 @@ func (x *CommentController) Create(w http.ResponseWriter, r *http.Request) {
 		x.AddError(err)
 		return
 	}
-	//var comment *core.Comment
-	//if err := json.NewDecoder(r.Body).Decode(&comment); err != nil {
-	//	x.AddError(err)
-	//	return
-	//}
 
 	comment.Link(x.Core)
 	if ok := comment.Validate(); !ok {

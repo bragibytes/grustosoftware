@@ -1,20 +1,21 @@
 package core
 
 import (
+	"time"
+
 	"golang.org/x/crypto/bcrypt"
 	. "gopkg.in/mgo.v2/bson"
-	"time"
 )
 
 type User struct {
 	*Core     `bson:"-"`
-	ID        ObjectId `bson:"_id"`
-	Name      string   `bson:"name"`
-	Email     string   `bson:"email"`
-	Bio       string   `bson:"bio"`
-	Password  string   `bson:"password"`
-	Perm      int      `bson:"perm"` // 0 = normal user, 1 = admin
-	Valid     bool     `bson:"valid"`
+	ID        ObjectId  `bson:"_id"`
+	Name      string    `bson:"name"`
+	Email     string    `bson:"email"`
+	Bio       string    `bson:"bio"`
+	Password  string    `bson:"password"`
+	Perm      int       `bson:"perm"` // 0 = normal user, 1 = admin
+	Valid     bool      `bson:"valid"`
 	CreatedAt time.Time `bson:"_createdAt"`
 	UpdatedAt time.Time `bson:"_updatedAt"`
 }
@@ -55,11 +56,25 @@ func (x *User) Posts() []*Post {
 	}
 	for _, v := range posts {
 		v.Link(x.Core)
+		v.CalculateScore()
 	}
 
 	x.SortHighestPostTo("top", posts)
 
 	return posts
+}
+
+func (x *User) Projects() []*Project {
+	var projects []*Project
+	if err := x.C("projects").Find(M{"_author": x.ID}).All(&projects); err != nil {
+		x.AddError(err)
+		return nil
+	}
+	for _, proj := range projects {
+		proj.Link(x.Core)
+	}
+
+	return projects
 }
 
 func (x *User) ComparePasswordWith(password string) bool {

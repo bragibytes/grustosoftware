@@ -1,13 +1,27 @@
 @import "normalize.css";
-@import "theme.scss";
+
+$colors:(
+  primary:rgba(#68d0db, 1),
+  secondary:rgba(brown, 1)
+);
+
+@function color($name){
+  @return map-get($colors, $name)
+}
 
 html, body {
-  height:100%;
+  height:100vh;
+}
+
+body {
 }
 
 nav {
   background-color: color("primary");
 
+  li {
+    color:black;
+  }
   .state-icon {
     background-color: beige;
     color:grey;
@@ -16,29 +30,30 @@ nav {
 
 .home-page {
 
-  .parallax-container {
-    height:50vh;
-  }
-  //border:1px dotted red;
-  .header {
-    background: url("../images/rustGo.png");
-    background-size: cover;
-    background-position: center;
-    border:1px dotted blue;
-    height:70vh;
-  }
+  border:1px dotted blue;
+  height:90%;
+
   .about {
-    height:70vh;
+    border:1px dotted green;
+    height:100%;
     h1 {
       span {
-        color:color("primary");
+        color:blue;
         span {
-          color:color("secondary");
+          color:red;
         }
       }
     }
   }
-  .contact {
-    height:70vh;
+  footer {
+    background-color: color("primary");
+  }
+}
+
+.profile {
+  .avatar {
+    img {
+      border:1px dotted red;
+    }
   }
 }

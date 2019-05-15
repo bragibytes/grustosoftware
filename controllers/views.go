@@ -1,10 +1,11 @@
 package controllers
 
 import (
+	"grustosoftware/core"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
-	"net/http"
-	"sambragge/go-software-solutions/core"
 )
 
 type ViewController struct {
@@ -42,11 +43,11 @@ func (x *ViewController) Home(w http.ResponseWriter, r *http.Request) {
 	x.View(w, "home", x.Core)
 }
 
-func(x *ViewController) Profile (w http.ResponseWriter, r *http.Request){
+func (x *ViewController) Profile(w http.ResponseWriter, r *http.Request) {
 	name := mux.Vars(r)["name"]
 
 	var user *core.User
-	if err := x.C("users").Find(bson.M{"name":name}).One(&user); err != nil {
+	if err := x.C("users").Find(bson.M{"name": name}).One(&user); err != nil {
 		x.AddError(err)
 		http.Redirect(w, r, x.Path, http.StatusSeeOther)
 		return

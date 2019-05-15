@@ -30,6 +30,33 @@ func (x *Core) validateLogin(pu PotentialUser) (*User, bool) {
 	return user, true
 }
 
+func (x *Core) SetCookie(w http.ResponseWriter, r *http.Request, u *User) {
+	exp := time.Now().Add(24 * time.Hour)
+	maxAge := (60 * 60) * 24
+
+	sess := NewSession(u.ID, exp, x)
+
+	if _, err := x.C("sessions").RemoveAll(bson.M{"user_id": sess.UserId}); err != nil {
+		x.AddError(err)
+		return
+	}
+
+	if err := sess.Save(); err != nil {
+		x.AddError(err)
+		http.Redirect(w, r, x.Path, http.StatusSeeOther)
+		return
+	}
+
+	cookie := &http.Cookie{
+		Name:   "session",
+		Value:  sess.ID.Hex(),
+		MaxAge: maxAge,
+	}
+
+	http.SetCookie(w, cookie)
+	http.Redirect(w, r, "/profile/"+u.Name, http.StatusSeeOther)
+}
+
 func (x *Core) Login(w http.ResponseWriter, r *http.Request) {
 
 	if err := r.ParseForm(); err != nil {
@@ -59,30 +86,7 @@ func (x *Core) Login(w http.ResponseWriter, r *http.Request) {
 
 	log.Print("\n\n no errors validating \n\n")
 	// Everything checks out, making session and cookie
-	exp := time.Now().Add(24 * time.Hour)
-	maxAge := (60 * 60) * 24
-
-	sess := NewSession(usr.ID, exp, x)
-
-	if _, err := x.C("sessions").RemoveAll(bson.M{"user_id": sess.UserId}); err != nil {
-		x.AddError(err)
-		return
-	}
-
-	if err := sess.Save(); err != nil {
-		x.AddError(err)
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
-
-	cookie := &http.Cookie{
-		Name:   "session",
-		Value:  sess.ID.Hex(),
-		MaxAge: maxAge,
-	}
-
-	http.SetCookie(w, cookie)
-	http.Redirect(w, r, "/profile/"+usr.Name, http.StatusSeeOther)
+	x.SetCookie(w, r, usr)
 
 }
 
@@ -103,7 +107,6 @@ func (x *Core) Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (x *Core) CheckState(w http.ResponseWriter, r *http.Request) {
-
 
 	cookie, err := r.Cookie("session")
 	if err != nil {
@@ -132,6 +135,5 @@ func (x *Core) CheckState(w http.ResponseWriter, r *http.Request) {
 	}
 
 	x.LoggedIn = user
-
 
 }

@@ -1,37 +1,35 @@
 package core
 
 import (
+	"time"
+
 	"github.com/pkg/errors"
 	. "gopkg.in/mgo.v2/bson"
-	"time"
 )
 
 type Comment struct {
 	*Core     `bson:"-" json:"-"`
-	ID        ObjectId `bson:"_id" json:"_id"`
-	Body      string   `bson:"body" json:"body"`
-	Parent    ObjectId `bson:"_parent" json:"_parent"`
-	AuthorID  ObjectId `bson:"_author" json:"_author"`
-	Score int8 `bson:"-"`
+	ID        ObjectId  `bson:"_id" json:"_id"`
+	Body      string    `bson:"body" json:"body"`
+	Parent    ObjectId  `bson:"_parent" json:"_parent"`
+	AuthorID  ObjectId  `bson:"_author" json:"_author"`
+	Score     int8      `bson:"-"`
 	CreatedAt time.Time `bson:"_createdAt" json:"_createdAt"`
 	UpdatedAt time.Time `bson:"_updatedAt" json:"_updatedAt"`
 }
 
 func (x *Comment) IDHex() string {
 
-
 	return x.ID.Hex()
 }
 
 func (x *Comment) Link(core *Core) {
 	x.Core = core
-
-	x.calculateScore()
 }
 
-func (c *Comment) calculateScore(){
+func (c *Comment) CalculateScore() {
 	var votes []Vote
-	if err := c.C("votes").Find(M{"_parent":c.ID}).All(&votes); err != nil {
+	if err := c.C("votes").Find(M{"_parent": c.ID}).All(&votes); err != nil {
 		c.AddError(err)
 		return
 	}
@@ -40,7 +38,7 @@ func (c *Comment) calculateScore(){
 	for _, v := range votes {
 		if v.Value == "up" {
 			c.Score++
-		}else if v.Value == "down"{
+		} else if v.Value == "down" {
 			c.Score--
 		}
 	}
@@ -91,6 +89,7 @@ func (x *Comment) Comments() []*Comment {
 
 	for _, v := range comments {
 		v.Link(x.Core)
+		v.CalculateScore()
 	}
 
 	return comments

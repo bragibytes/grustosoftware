@@ -6,12 +6,14 @@ import (
 )
 
 type errContainer struct {
-	errs []error
+	errs     []error
+	clearing bool
 }
 
 func NewErrorContainer() *errContainer {
 	x := &errContainer{
 		make([]error, 0),
+		false,
 	}
 
 	return x
@@ -21,6 +23,7 @@ func (x *errContainer) clear() {
 	time.Sleep(5 * time.Second)
 
 	x.errs = make([]error, 0)
+	x.clearing = true
 
 }
 
@@ -44,7 +47,9 @@ func (x *errContainer) AddError(e error) {
 
 	x.printErr(e.Error())
 	x.errs = append(x.errs, e)
-	go x.clear()
+	if !x.clearing {
+		go x.clear()
+	}
 }
 
 //func (x *errContainer) AddErrors(e []error) {

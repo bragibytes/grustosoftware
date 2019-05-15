@@ -2,8 +2,14 @@
 
     {{if .LoggedIn}}
         <form action="/api/posts/" method="POST">
-            <input type="text" name="title" placeholder="Title...">
-            <input type="text" name="body" placeholder="Body...">
+            <div class="input-field">
+                <input type="text" name="title" id="title">
+                <label for="title">Title</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="body" id="body">
+                <label for="body">Body</label>
+            </div>
             <input type="submit" class="btn" value="Post">
         </form>
     {{end}}

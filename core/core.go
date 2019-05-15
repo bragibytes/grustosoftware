@@ -1,11 +1,12 @@
 package core
 
 import (
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"html/template"
 	"net/http"
 	"sort"
+
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Core struct {
@@ -13,7 +14,7 @@ type Core struct {
 	*mgo.Database
 	*errContainer
 	LoggedIn *User
-	Path string
+	Path     string
 }
 
 func NewCore(db *mgo.Database) *Core {
@@ -61,6 +62,7 @@ func (x *Core) SessionCount() int {
 	return len(sessions)
 }
 
+// Posts : gets and returns all posts in the database, if there are none or there was an error it returns nil
 func (x *Core) Posts() []*Post {
 
 	var posts []*Post
@@ -71,6 +73,7 @@ func (x *Core) Posts() []*Post {
 	}
 	for _, p := range posts {
 		p.Link(x)
+		p.CalculateScore()
 	}
 
 	x.SortHighestPostTo("top", posts)
@@ -79,9 +82,25 @@ func (x *Core) Posts() []*Post {
 
 }
 
-func (x *Core) SortHighestPostTo(where string, posts []*Post){
+func (x *Core) Projects() []*Project {
+	var projects []*Project
+
+	if err := x.C("projects").Find(bson.M{}).All(&projects); err != nil {
+		x.AddError(err)
+		return nil
+	}
+
+	for _, p := range projects {
+		p.Link(x)
+	}
+
+	return projects
+
+}
+
+func (x *Core) SortHighestPostTo(where string, posts []*Post) {
 	if where == "top" {
-		sort.Slice(posts, func(i, j int)bool{
+		sort.Slice(posts, func(i, j int) bool {
 			return posts[i].Score > posts[j].Score
 		})
 	}
@@ -91,16 +110,12 @@ func (x *Core) IconState() string {
 	if x.LoggedIn != nil {
 		return ""
 	}
-	return  "pulse"
+	return "pulse"
 }
 
 func (x *Core) IconClick() string {
 	if x.LoggedIn != nil {
 		return "#"
 	}
-	return  "#modal"
+	return "#modal"
 }
-
-
-
-

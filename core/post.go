@@ -1,51 +1,41 @@
 package core
 
 import (
-	"github.com/pkg/errors"
-	. "gopkg.in/mgo.v2/bson"
 	"log"
 	"time"
+
+	"github.com/pkg/errors"
+	. "gopkg.in/mgo.v2/bson"
 )
 
 type Post struct {
 	*Core     `bson:"-"`
-	ID        ObjectId `bson:"_id"`
-	Title     string   `bson:"title"`
-	Body      string   `bson:"body"`
-	AuthorID  ObjectId `bson:"_author"`
-	Score int8 `bson:"-"`
+	ID        ObjectId  `bson:"_id"`
+	Title     string    `bson:"title"`
+	Body      string    `bson:"body"`
+	AuthorID  ObjectId  `bson:"_author"`
+	Score     int8      `bson:"-"`
 	CreatedAt time.Time `bson:"_createdAt"`
 	UpdatedAt time.Time `bson:"_updatedAt"`
 }
 
-//func NewPost(title, body string, author ObjectId, con *Core) *Post {
-//	x := &Post{
-//		Title: title,
-//		Body:  body,
-//		Core:  con,
-//	}
-//
-//	return x
-//}
-
 func (p *Post) Link(core *Core) {
 	p.Core = core
 
-	p.calculateScore()
 }
 
-func (p *Post) calculateScore(){
+func (p *Post) CalculateScore() {
 	var votes []Vote
-	if err := p.C("votes").Find(M{"_parent":p.ID}).All(&votes); err != nil {
-		p.AddError(err)
+	if err := p.C("votes").Find(M{"_parent": p.ID}).All(&votes); err != nil {
+		p.AddError(errors.New("the error is comming from trying to find votes in the db " + err.Error()))
 		return
 	}
 
 	for _, v := range votes {
 		if v.Value == "up" {
 			p.Score++
-		}else if v.Value == "down"{
-				p.Score--
+		} else if v.Value == "down" {
+			p.Score--
 		}
 	}
 }
@@ -60,6 +50,7 @@ func (x *Post) Comments() []*Comment {
 
 	for _, v := range comments {
 		v.Link(x.Core)
+		v.CalculateScore()
 	}
 
 	return comments
@@ -76,7 +67,6 @@ func (x *Post) CommentCount() int {
 
 func (x *Post) IDHex() string {
 
-
 	return x.ID.Hex()
 }
 
@@ -91,20 +81,32 @@ func (x *Post) Author() *User {
 	return user
 }
 
+func (x *Post) ShowSelf() {
+	log.Printf("\n\n\n ID : %v", x.ID)
+	log.Printf("Title : %v", x.Title)
+	log.Printf("Body : %v", x.Body)
+	log.Printf("AuthorID : %v", x.AuthorID)
+	log.Printf("CreatedAt : %v", x.CreatedAt)
+	log.Printf("UpdatedAt : %v \n\n\n", x.UpdatedAt)
+}
+
 func (x *Post) Validate() bool {
 
 	// title validation
 	if len(x.Title) < 5 {
 		x.AddError(errors.New("Title too short"))
 	}
+	log.Print("\n=== checked title")
 	// body validation
 	if len(x.Body) < 10 {
 		x.AddError(errors.New("Body too short"))
 	}
+	log.Print("\n=== checked body")
 
 	if x.ErrorCount() > 0 {
 		return false
 	}
+
 	return true
 }
 

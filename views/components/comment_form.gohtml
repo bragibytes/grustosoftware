@@ -9,7 +9,10 @@
     <div id="commentModal{{.IDHex}}" class="modal">
         <div class="modal-content">
             <form action="/api/comments/" method="POST">
-                <input type="text" name="body" placeholder="Comment...">
+                <div class="input-field">
+                    <input type="text" name="body" id="body">
+                    <label for="body">Body</label>
+                </div>
                 <input type="submit" value="Write Comment">
                 <input type="hidden" name="parent" value="{{.IDHex}}">
             </form>

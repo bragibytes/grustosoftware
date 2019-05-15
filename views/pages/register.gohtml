@@ -4,10 +4,23 @@
     {{if not .LoggedIn}}
         <div class="row">
             <form class="registerForm col s6" action="/api/users/" method="POST">
-                <input type="text" name="name" placeholder="name...">
-                <input type="text" name="email" placeholder="email...">
-                <input type="password" name="password" placeholder="password...">
-                <input type="password" name="cpassword" placeholder="confirm password...">
+                <div class="input-field">
+                    <input type="text" id="name" name="name"/>
+                    <label for="name">Username</label>
+
+                </div>
+                <div class="input-field">
+                    <input type="text" id="email" name="email">
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="password" name="password">
+                    <label for="password">Password</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="cpassword" name="cpassword">
+                    <label for="cpassword">Confirm Password</label>
+                </div>
                 <input type="submit" class="btn" value="Register">
             </form>
         </div>
@@ -15,3 +28,4 @@
 
     {{template "tail"}}
 {{end}}
+

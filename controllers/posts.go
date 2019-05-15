@@ -1,10 +1,11 @@
 package controllers
 
 import (
+	"grustosoftware/core"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
-	"net/http"
-	"sambragge/go-software-solutions/core"
 )
 
 type PostController struct {
@@ -23,7 +24,7 @@ func NewPostController(mc *core.Core) *PostController {
 }
 
 func (pc *PostController) Create(w http.ResponseWriter, r *http.Request) {
-	defer http.Redirect(w, r, "/", http.StatusSeeOther)
+	defer http.Redirect(w, r, pc.Path, http.StatusSeeOther)
 
 	if err := r.ParseForm(); err != nil {
 		pc.AddError(err)

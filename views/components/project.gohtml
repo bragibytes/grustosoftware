@@ -1,0 +1,20 @@
+{{define "project"}}
+
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">{{.Name}}</span>
+        </div>
+        <div class="card-image">
+            <img src="/a/images/defaultProject.png">
+        </div>
+        <div class="card-content">
+            <p>{{.Description}}</p>
+        </div>
+        <div class="card-action">
+            <a href="{{.ProjectLink}}">Check out the project!</a>
+            <a href="{{.CodeLink}}">Check out the code!</a>
+        </div>
+    </div>
+
+{{end}}

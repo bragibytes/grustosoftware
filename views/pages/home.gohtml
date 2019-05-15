@@ -2,58 +2,39 @@
 
     {{template "head" .}}
     <div class="home-page">
-        <section class="header section"></section>
-        <section class="section about valign-wrapper">
+{{/*        <section class="header section"></section>*/}}
+        <section class="section about">
             <div class="row">
-                <div class="col s12">
+                <div class="col s6">
                     <h1 class="center-align">What is <span>G<span>rust</span>o</span>?</h1>
-                </div>
-                <div class="col s4 card">
-                    <h3 class="card-title center-align">Blog</h3>
-                    <p class="card-content">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium blanditiis dicta exercitationem iusto nesciunt porro quas quos ratione sit. Ab consectetur distinctio nostrum obcaecati odit. Doloremque doloribus est expedita officia.
-                    </p>
-                </div>
-                <div class="col s4 card">
-                    <h3 class="card-title center-align">Portfolio</h3>
-                    <p class="card-content">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus alias autem deserunt est excepturi fuga itaque necessitatibus nemo nulla, perferendis quasi, reiciendis rem, saepe tenetur. Commodi explicabo repudiandae vitae?
-                    </p>
-                </div>
-                <div class="col s4 card">
-                    <h3 class="card-title center-align">Resources</h3>
-                    <p class="card-content">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi assumenda consequatur consequuntur delectus distinctio dolorem ducimus illum nemo nobis nostrum numquam odit officia perferendis porro praesentium reiciendis, ut veniam voluptatibus.
-                    </p>
-                </div>
-            </div>
-        </section>
-        <section class="section parallax-container">
-            <div class="parallax"><img src="/a/images/medow.jpg" alt="cant load image"></div>
-        </section>
+                    <p class="flow-text">
+                        In a nutshell, Grusto is a fan-club for the Go and Rust programming languages. It is a place
+                        for people to come together and talk about these amazing languages, and share cool things they make with them.
 
-        <section class="section contact valign-wrapper">
-            <div class="row">
-                <div class="col s6">
-                    <h3>Get in touch</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur cupiditate, dicta doloribus error excepturi, harum illo inventore magnam maiores mollitia pariatur praesentium quibusdam reiciendis repellat repudiandae? Impedit, quibusdam, velit. Nulla.
                     </p>
                 </div>
                 <div class="col s6">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad animi, deserunt eius est ex fuga magnam molestiae necessitatibus nobis omnis possimus provident quasi quis rem rerum sed ut. Atque, similique.
+                    <ul class="tabs">
+                        <li class="tab active"><a href="#blogDesc">Blog</a></li>
+                        <li class="tab"><a href="#portfolioDesc">Portfolio</a></li>
+                        <li class="tab"><a href="#resourcesDesc">Resources</a></li>
+                    </ul>
+                    <p id="blogDesc" class="flow-text">
+                        The blog section is where users can have open discussions in the Go or Rust board. Higher rated posts and comments will appear first
+                        There is also a board for reporting bugs, or offering general suggestions. I am by no means a master of anything and always appreciate guidance and criticism
+                    </p>
+                    <p id="portfolioDesc" class="flow-text">
+                        portfolio     nsectetur adipisicing elit. Accusantium blanditiis dicta exercitationem iusto nesciunt porro quas quos ratione sit. Ab consectetur distinctio nostrum obcaecati odit. Doloremque doloribus est expedita officia.
+                    </p>
+                    <p  id="resourcesDesc" class="flow-text">
+                        resources    consectetur adipisicing elit. Accusantium blanditiis dicta exercitationem iusto nesciunt porro quas quos ratione sit. Ab consectetur distinctio nostrum obcaecati odit. Doloremque doloribus est expedita officia.
+                    </p>
                 </div>
             </div>
         </section>
-        <footer class="page-footer black">
-            <div class="container">
-                <div class="footer-copyright">
-                    ©grustosoftware
-                </div>
-            </div>
-        </footer>
 
     </div>
     {{template "tail"}}
 
 {{end}}
+
