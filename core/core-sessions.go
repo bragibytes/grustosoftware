@@ -71,13 +71,6 @@ func (x *Core) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//pu, err := decodeUser(r.Body);
-	//if err != nil {
-	//	x.AddError(err)
-	//	http.Redirect(w, r, x.Path, http.StatusSeeOther)
-	//	return
-	//}
-
 	usr, ok := x.validateLogin(pu)
 	if !ok {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -108,21 +101,28 @@ func (x *Core) Logout(w http.ResponseWriter, r *http.Request) {
 
 func (x *Core) CheckState(w http.ResponseWriter, r *http.Request) {
 
+	log.Print("\n checking state \n")
+
 	cookie, err := r.Cookie("session")
 	if err != nil {
+		log.Printf("\n could not find a cookie %v, it is comming in through path %v \n", err.Error(), r.URL.Path)
 		x.LoggedIn = nil
 		return
 	}
 
 	if _, err = x.C("sessions").RemoveAll(bson.M{"expires": bson.M{"$lt": time.Now()}}); err != nil {
-		x.AddError(err)
+		if err.Error() == "not found"{
+			log.Print("\n no expired sessions \n")
+		}else{
+			x.AddError(err)
+		}
 	}
 
 	var session *Session
 	if err := x.C("sessions").Find(bson.M{"_id": bson.ObjectIdHex(cookie.Value)}).One(&session); err != nil {
+		log.Printf("\n could not find session matching cookie  %v \n", err.Error())
 		x.LoggedIn = nil
 		cookie.MaxAge = -1
-		log.Print("there is a cookie but no session, deleting cookie")
 		http.SetCookie(w, cookie)
 		return
 	}
@@ -133,6 +133,8 @@ func (x *Core) CheckState(w http.ResponseWriter, r *http.Request) {
 		x.AddError(errors.New("there's a cookie and a session, but no user : " + err.Error()))
 		return
 	}
+
+	log.Print("\n everything checks out, setting logged in user \n")
 
 	x.LoggedIn = user
 

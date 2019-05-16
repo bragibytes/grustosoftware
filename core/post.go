@@ -13,6 +13,7 @@ type Post struct {
 	ID        ObjectId  `bson:"_id"`
 	Title     string    `bson:"title"`
 	Body      string    `bson:"body"`
+	ParentID ObjectId	`bson:"_parent"`
 	AuthorID  ObjectId  `bson:"_author"`
 	Score     int8      `bson:"-"`
 	CreatedAt time.Time `bson:"_createdAt"`

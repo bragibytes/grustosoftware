@@ -1,5 +1,5 @@
 @import "normalize.css";
-html, body {
+body {
   height: 100vh;
 }
 
@@ -16,11 +16,11 @@ nav .state-icon {
 
 .home-page {
   border: 1px dotted blue;
-  height: 90%;
+  height: 89%;
 }
 .home-page .about {
   border: 1px dotted green;
-  height: 100%;
+  height: 90%;
 }
 .home-page .about h1 span {
   color: blue;
@@ -30,6 +30,23 @@ nav .state-icon {
 }
 .home-page footer {
   background-color: #68d0db;
+  height: 10%;
+  display: grid;
+  grid-template: repeat(1, 1fr)/repeat(6, 1fr);
+  grid-template-areas: "g g d d r r ";
+}
+.home-page footer i {
+  display: flex;
+  justify-content: center;
+}
+.home-page footer .fa-github {
+  grid-area: g;
+}
+.home-page footer .fa-docker {
+  grid-area: d;
+}
+.home-page footer .fa-reddit {
+  grid-area: r;
 }
 
 .profile .avatar img {

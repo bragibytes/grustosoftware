@@ -34,6 +34,7 @@ func init() {
 
 	theCore := core.NewCore(s.DB("grusto"))
 	userController := controllers.NewUserController(theCore)
+	boardController := controllers.NewBoardController(theCore)
 	postController := controllers.NewPostController(theCore)
 	commentController := controllers.NewCommentController(theCore)
 	voteController := controllers.NewVoteController(theCore)
@@ -42,6 +43,7 @@ func init() {
 
 	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) { http.ServeFile(w, r, "views/assets/images/gopher.png") })
 	http.Handle("/api/users/", http.StripPrefix("/api/users", userController))
+	http.Handle("/api/boards/", http.StripPrefix("/api/boards", boardController))
 	http.Handle("/api/posts/", http.StripPrefix("/api/posts", postController))
 	http.Handle("/api/comments/", http.StripPrefix("/api/comments", commentController))
 	http.Handle("/api/votes/", http.StripPrefix("/api/votes", voteController))

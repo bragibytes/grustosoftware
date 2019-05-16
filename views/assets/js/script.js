@@ -1,4 +1,5 @@
 M.AutoInit();
+checkCookie();
 
 function vote(type, id){
 
@@ -35,4 +36,4 @@ function logout() {
     fetch('/logout', options)
         .then(()=>window.location.replace('/'))
         .catch(err=>console.error(err))
-};
+}
